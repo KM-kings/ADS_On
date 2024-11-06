@@ -1,0 +1,15 @@
+h1 {
+  text-align: center;
+  background-color: Red;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+h1:hover {
+  color: white;
+}
+
+h2 {
+  background-color: greenyellow;
+  border-radius:5px;
+}

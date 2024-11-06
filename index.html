@@ -1,0 +1,118 @@
+
+
+  <link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloc-notes avec menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #bloc-notes-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #bloc-notes {
+            width: 300px;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #333;
+            resize: none;
+            font-size: 20px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #menu-notes {
+            margin-top: 20px;
+            width: 300px;
+            border: 1px solid #333;
+            padding: 10px;
+        }
+        .note-item {
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        .note-item:hover {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="bloc-notes-container">
+        <input type="text" id="titre-note" placeholder="Titre de la note" style="width: 300px; padding: 5px;">
+        <textarea id="bloc-notes" placeholder="Écris ici..."></textarea>
+        <button onclick="sauvegarder()">Sauvegarder la note</button>
+        <div id="menu-notes">
+            <h3>Vos notes sauvegardées :</h3>
+            <div id="liste-notes"></div>
+        </div>
+    </div>
+
+    <script>
+        // Charger toutes les notes au démarrage
+        window.onload = function() {
+            chargerNotes();
+        };
+
+        // Fonction pour sauvegarder une nouvelle note avec un titre
+        function sauvegarder() {
+            const titre = document.getElementById("titre-note").value;
+            const texte = document.getElementById("bloc-notes").value;
+
+            if (titre === "" || texte === "") {
+                alert("Veuillez entrer un titre et du texte !");
+                return;
+            }
+
+            // Enregistrer la note dans le localStorage
+            localStorage.setItem(titre, texte);
+            alert("Note sauvegardée !");
+
+            // Vider les champs et mettre à jour la liste des notes
+            document.getElementById("titre-note").value = "";
+            document.getElementById("bloc-notes").value = "";
+            chargerNotes();
+        }
+
+        // Fonction pour charger toutes les notes dans le menu
+        function chargerNotes() {
+            const listeNotes = document.getElementById("liste-notes");
+            listeNotes.innerHTML = "";
+
+            // Parcourir toutes les clés du localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const titre = localStorage.key(i);
+                const div = document.createElement("div");
+                div.textContent = titre;
+                div.className = "note-item";
+                div.onclick = function() {
+                    afficherNote(titre);
+                };
+                listeNotes.appendChild(div);
+            }
+        }
+
+        // Fonction pour afficher une note sélectionnée
+        function afficherNote(titre) {
+            const texte = localStorage.getItem(titre);
+            document.getElementById("titre-note").value = titre;
+            document.getElementById("bloc-notes").value = texte;
+        }
+    </script>
+</body>
+</html>
